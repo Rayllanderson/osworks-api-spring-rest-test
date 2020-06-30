@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Cliente {
@@ -14,9 +17,17 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @NotBlank //valida que se o valor que ta sendo passado é null, vazio ou apenas espaços
+    @Size(max = 255)
     private String nome;
+    
+    @NotBlank
+    @Email //verificar se um email é "válido" com '@', '.', enfim
+    @Size (max = 255)
     private String email;
     
+    @NotBlank
+    @Size (max = 60)
     @Column(name = "fone")
     private String telefone;
     
