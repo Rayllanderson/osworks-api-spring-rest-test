@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ray.osworks.domain.model.Cliente;
 import com.ray.osworks.domain.repository.ClienteRepository;
+import com.ray.osworks.domain.service.CadastroClienteService;
 
 @RestController
 @RequestMapping("/clientes")
@@ -28,6 +28,9 @@ public class ClientsController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private CadastroClienteService cadastroCliente;
     
     @GetMapping
     public List<Cliente> listar () {
@@ -48,7 +51,7 @@ public class ClientsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar (@Valid @RequestBody Cliente cliente) {
-	return clienteRepository.save(cliente);
+	return cadastroCliente.salvar(cliente);
     }
     
     @PutMapping("/{clienteId}")
@@ -58,7 +61,7 @@ public class ClientsController {
 	    return ResponseEntity.notFound().build();
 	}
 	cliente.setId(clienteId);
-	cliente = clienteRepository.save(cliente);
+	cliente = cadastroCliente.salvar(cliente);
 	
 	return ResponseEntity.ok(cliente);
     }
@@ -70,7 +73,7 @@ public class ClientsController {
 	    return ResponseEntity.notFound().build();
 	}
 
-	clienteRepository.deleteById(clienteId);
+	cadastroCliente.excluir(clienteId);
 	
 	return ResponseEntity.noContent().build();
     }
